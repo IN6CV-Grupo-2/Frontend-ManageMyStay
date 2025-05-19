@@ -4,7 +4,7 @@ import {
     BreadcrumbItem,
     BreadcrumbLink,
   } from '@chakra-ui/react'
-import { DrawerButton } from '../Drawer.jsx';
+import { DrawerButton } from './Drawer.jsx';
 export const NavBar = () => {
 
     return(
