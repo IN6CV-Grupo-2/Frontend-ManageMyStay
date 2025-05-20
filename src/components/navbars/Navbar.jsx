@@ -8,7 +8,7 @@ import { DrawerButton } from './Drawer.jsx';
 export const NavBar = () => {
 
     return(
-        <Breadcrumb separator='-'>
+        <Breadcrumb separator='-' w="100vw">
             <BreadcrumbItem>
                 <BreadcrumbLink href='#'>Home</BreadcrumbLink>
             </BreadcrumbItem>
