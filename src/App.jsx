@@ -1,16 +1,20 @@
 import { useState } from 'react'
 import { useRoutes } from 'react-router-dom';
-import routes from './routes.jsx';
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from './routes.jsx';
 import './App.css'
 
-export const App = () => {
+const App = () => {
 
-  let element = useRoutes(routes);
-
-    return(
+  return (
+    <BrowserRouter>
       <>
-      {element}
+        <div className="card">
+          <AppRoutes />
+        </div>
       </>
-    )
-}
+    </BrowserRouter>
+  );
+};
 
+export default App;
