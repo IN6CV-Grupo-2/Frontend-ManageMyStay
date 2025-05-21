@@ -34,42 +34,35 @@ export const  PrincipalPage = () => {
 
     return(
         <Box>
-            <Box bgImg="https://i0.wp.com/foodandpleasure.com/wp-content/uploads/2021/02/hoteles-con-las-mejores-vistas-maroma.jpg?w=1200&ssl=1" width="100vw" height="100vh" alignContent="center" pl="33%" >
-                <Card align='center' w="500px" bg="transparent">
-                    <CardHeader>
-                        <Heading size='md'> Welcome to Manage My Stay</Heading>
+            <Box
+                bgImage="url('https://i0.wp.com/foodandpleasure.com/wp-content/uploads/2021/02/hoteles-con-las-mejores-vistas-maroma.jpg?w=1200&ssl=1')"
+                bgSize="cover"
+                bgPosition="center"
+                bgRepeat="no-repeat"
+                width="100vw"
+                height="100vh"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                >
+                <Card w="500px" bg="rgba(255, 255, 255, 0.8)" boxShadow="lg">
+                    <CardHeader textAlign="center">
+                    <Heading size="md">Welcome to Manage My Stay</Heading>
                     </CardHeader>
                     <CardBody>
-                        <Text>Booking your stay has never been so easy</Text>
+                    <Text textAlign="center">Booking your stay has never been so easy</Text>
                     </CardBody>
-                    <CardFooter>
-                        <Button colorScheme='blue'>View here</Button>
+                    <CardFooter justifyContent="center">
+                    <Button colorScheme="blue">View here</Button>
                     </CardFooter>
                 </Card>
-            </Box>
-            <Box border="0px">
-                <Card
-                    overflow='hidden'
-                    variant='outline'
-                    >
-
-                    <Stack m="75px" textAlign="center">
-                        <CardBody>
-                        <Heading size='md'>The perfect latte</Heading>
-
-                        <Text py='2'>
-                        Manage My Stay is the easiest and fastest way to find and book hotels anywhere in the world. Whether you are traveling for business,
-                         vacation, or a weekend getaway, our app offers you thousands of options with the best prices and exclusive deals.
-                        </Text>
-                        </CardBody>
-                    </Stack>
-                </Card>
-            </Box>
+                </Box>
             <Box>
                 <Card
                     direction={{ base: 'column', sm: 'row' }}
                     overflow='hidden'
                     variant='outline'
+                    bg='#F9F7F2'
                     >
                     <Stack m="75px">
                         <CardBody>
@@ -145,11 +138,32 @@ export const  PrincipalPage = () => {
                     </Box>
                 </Card>
             </Box>
+            <Box border="0px">
+                <Card
+                    overflow='hidden'
+                    variant='outline'
+                      bg="#2E2A29"
+                      color="white"
+                    >
+
+                    <Stack m="75px" textAlign="center">
+                        <CardBody>
+                        <Heading size='md'>The perfect latte</Heading>
+
+                        <Text py='2'>
+                        Manage My Stay is the easiest and fastest way to find and book hotels anywhere in the world. Whether you are traveling for business,
+                         vacation, or a weekend getaway, our app offers you thousands of options with the best prices and exclusive deals.
+                        </Text>
+                        </CardBody>
+                    </Stack>
+                </Card>
+            </Box>
                 <Box> 
                     <Card
                         direction={{ base: 'column', sm: 'row' }}
                         overflow='hidden'
                         variant='outline'
+                        bg="#F9F7F2"
                         >
                         <Box
                             maxW={{ base: '100%', sm: '60%' }}
