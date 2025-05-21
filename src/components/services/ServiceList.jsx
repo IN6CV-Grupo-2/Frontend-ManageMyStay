@@ -24,10 +24,12 @@ const ServiceList = ({ services, isLoading, onEdit, onDelete }) => {
             </Thead>
             <Tbody>
                 {services.map((service) => (
+                    
                     <Tr key={service.uid}>
                         <Td>{service.name}</Td>
                         <Td>{service.description}</Td>
                         <Td>
+                            
                             <IconButton
                                 size="sm"
                                 colorScheme="yellow"

@@ -8,6 +8,7 @@ const ServicesPage = () => {
     const {
         services,
         isLoading,
+        getServices,
         createService,
         editService,
         removeService,

@@ -6,7 +6,7 @@ import {
   } from '@chakra-ui/react'
 import { DrawerButton } from './Drawer.jsx';
 export const NavBar = () => {
-
+    const navigate = useNavigate();
     return(
         <Breadcrumb separator='-'>
             <BreadcrumbItem>
@@ -19,6 +19,10 @@ export const NavBar = () => {
 
             <BreadcrumbItem isCurrentPage>
                 <BreadcrumbLink href='#'>Events</BreadcrumbLink>
+            </BreadcrumbItem>
+
+            <BreadcrumbItem>
+                <BreadcrumbLink onClick={() => navigate('/services')}>Services</BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem>
