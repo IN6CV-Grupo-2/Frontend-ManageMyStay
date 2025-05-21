@@ -8,7 +8,9 @@ import {
     useDisclosure,
     Button,
     Input,
-    DrawerFooter
+    DrawerFooter,
+    Avatar,
+    AvatarBadge,
   } from '@chakra-ui/react'
 
   import React from 'react'
@@ -19,8 +21,10 @@ export const DrawerButton = () => {
       
     return (
          <>
-            <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
-                Open
+            <Button ref={btnRef} colorScheme='teal' onClick={onOpen} w="50px" h="50px"  borderRadius="full">
+                <Avatar w="52px" h="52px">
+                    <AvatarBadge boxSize='1.25em' bg='green.500' />
+                </Avatar>
             </Button>
             <Drawer
                 isOpen={isOpen}
