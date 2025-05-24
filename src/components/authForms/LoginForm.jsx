@@ -7,16 +7,24 @@ import {
   FormErrorMessage,
   Heading,
   VStack,
-  useToast
+  useToast,
+  Text,
+  Link as ChakraLink,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  IconButton
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const LoginForm = () => {
   const { login, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [touched, setTouched] = useState({});
   const toast = useToast();
   const navigate = useNavigate();
@@ -25,14 +33,13 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      
       toast({
         title: 'Login exitoso',
         status: 'success',
         duration: 3000,
         isClosable: true
       });
-      navigate('/dashboard'); 
+      navigate('/dashboard');
     } catch (error) {
       toast({
         title: 'Error al iniciar sesión',
@@ -60,25 +67,46 @@ const LoginForm = () => {
         <VStack spacing="4">
           <FormControl isInvalid={isEmailInvalid}>
             <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={handleBlur('email')}
-              placeholder="correo@ejemplo.com"
-            />
-            {isEmailInvalid && <FormErrorMessage>El email es requerido</FormErrorMessage>}
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <FaEnvelope color="gray" />
+              </InputLeftElement>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onBlur={handleBlur("email")}
+                placeholder="correo@ejemplo.com"
+              />
+            </InputGroup>
+            {isEmailInvalid && (
+              <FormErrorMessage>El email es requerido</FormErrorMessage>
+            )}
           </FormControl>
 
           <FormControl isInvalid={isPasswordInvalid}>
             <FormLabel>Contraseña</FormLabel>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onBlur={handleBlur('password')}
-              placeholder="********"
-            />
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <FaLock color="gray" />
+              </InputLeftElement>
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={handleBlur("password")}
+                placeholder="********"
+              />
+              <InputRightElement>
+                <IconButton
+                  variant="ghost"
+                  size="sm"
+                  icon={showPassword ? <FaEyeSlash /> : <FaEye />}
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label="Mostrar contraseña"
+                />
+              </InputRightElement>
+            </InputGroup>
             {isPasswordInvalid && (
               <FormErrorMessage>La contraseña es requerida</FormErrorMessage>
             )}
@@ -93,6 +121,13 @@ const LoginForm = () => {
           >
             Ingresar
           </Button>
+
+          <Text fontSize="sm" mt={4}>
+            ¿No tienes cuenta?{' '}
+            <ChakraLink as={Link} to="/register" color="teal.500">
+              Regístrate aquí
+            </ChakraLink>
+          </Text>
         </VStack>
       </form>
     </Box>
