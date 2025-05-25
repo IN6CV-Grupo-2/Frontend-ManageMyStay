@@ -1,35 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useRoutes } from 'react-router-dom';
+import { ChakraProvider, useColorMode, extendTheme } from "@chakra-ui/react";
+import routes from './routes.jsx';
+import { Navbar } from './components/navbars/Navbar.jsx';
+import { Footer } from './components/footers/Footer.jsx';
 
-function App() {
-  const [count, setCount] = useState(0)
+// 🎨 Tema personalizado: Meddle Pink Floyd
+const theme = extendTheme({
+  styles: {
+    global: {
+      body: {
+        bg: "linear-gradient(135deg, #2E576A 0%, #B8807C 60%, #7BC2C4 100%)",
+        minHeight: "100vh",
+        minWidth: "100vw",
+        overflowX: "hidden",
+      },
+    },
+  },
+  colors: {
+    meddle: {
+      teal: "#2E576A",
+      brown: "#B8807C",
+      aqua: "#7BC2C4",
+      sand: "#F9F7F2",
+      darksand: "#2E2A29",
+      blue: "#213547",
+      pink: "#E6B7B4",
+    },
+  },
+});
+
+// 🧱 Layout con Navbar + Footer + Contenido
+function Layout({ children }) {
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Navbar colorMode={colorMode} toggleColorMode={toggleColorMode} />
+      <div style={{ minHeight: "calc(100vh - 140px)", width: "100vw", overflowX: "hidden" }}>
+        {children}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Footer />
     </>
-  )
+  );
 }
 
-export default App
+// 🚀 Componente App principal
+export const App = () => {
+  const element = useRoutes(routes);
+
+  return (
+    <ChakraProvider theme={theme}>
+      <Layout>
+        {element}
+      </Layout>
+    </ChakraProvider>
+  );
+};
