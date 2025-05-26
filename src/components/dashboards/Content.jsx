@@ -1,12 +1,9 @@
+import { Box } from "@chakra-ui/react";
 
-import { Route,Routes } from "react-router-dom";
-import { PrincipalPage } from "./PrincipalPage";
 export const Content = () => {
-    return(
-        <div>
-            <Routes>
-                <Route path="/" element={<PrincipalPage/>}/>
-            </Routes>
-        </div>
-    )
+  return (
+    <Box p={4}>
+        
+    </Box>
+  )
 }

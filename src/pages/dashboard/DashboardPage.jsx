@@ -1,13 +1,14 @@
 import { div } from "framer-motion/client"
-import { NavBar } from "../../components/navbars/Navbar.jsx"
+import { Navbar } from "../../components/navbars/Navbar.jsx"
 import { Content } from "../../components/dashboards/Content.jsx"
+import { Outlet } from "react-router-dom";
 
 export const DashboardPage = () => {
 
     return(
         <div>
-            <NavBar/>
-            <Content/>
+            <Navbar/>
+            <Outlet/>
         </div>
     )
 }

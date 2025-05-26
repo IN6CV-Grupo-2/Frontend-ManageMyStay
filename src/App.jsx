@@ -1,16 +1,14 @@
-import { useState } from 'react'
+import { Provider } from "@/components/ui/provider"
 import { useRoutes } from 'react-router-dom';
 import routes from './routes.jsx';
 import './App.css'
 
 export const App = () => {
+  const element = useRoutes(routes)
 
-  let element = useRoutes(routes);
-
-    return(
-      <>
+  return (
+    <Provider>
       {element}
-      </>
-    )
+    </Provider>
+  );
 }
-
