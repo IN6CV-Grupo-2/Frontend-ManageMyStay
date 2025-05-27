@@ -20,12 +20,6 @@ export const Navbar = ({ toggleColorMode, colorMode }) => {
   const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
-  
-  console.log("isLoggedIn navbar:", isLoggedIn); // esto debe cambiar al loguearse
-
-  
-
-
   const handleAuthClick = () => {
     if (isLoggedIn) {
       logout();
@@ -34,7 +28,7 @@ export const Navbar = ({ toggleColorMode, colorMode }) => {
       navigate('/login');
     }
   };
- 
+
   return (
     <Flex
       as="nav"
@@ -62,7 +56,9 @@ export const Navbar = ({ toggleColorMode, colorMode }) => {
         <Icon as={FaHome} mr={2} color="#b8807c" />
         ManageMyStay
       </Box>
+
       <Spacer />
+
       <HStack spacing={6} display={{ base: "none", md: "flex" }}>
         {navItems.map((item) => (
           <NavLink
@@ -84,6 +80,7 @@ export const Navbar = ({ toggleColorMode, colorMode }) => {
           </NavLink>
         ))}
       </HStack>
+
       <Box display={{ base: "block", md: "none" }}>
         <Menu>
           <MenuButton
@@ -109,7 +106,9 @@ export const Navbar = ({ toggleColorMode, colorMode }) => {
           </MenuList>
         </Menu>
       </Box>
+
       <Spacer />
+
       <Button
         onClick={handleAuthClick}
         variant="outline"
@@ -121,6 +120,7 @@ export const Navbar = ({ toggleColorMode, colorMode }) => {
       >
         {isLoggedIn ? "Logout" : "Login"}
       </Button>
+
       <DrawerButton />
     </Flex>
   );

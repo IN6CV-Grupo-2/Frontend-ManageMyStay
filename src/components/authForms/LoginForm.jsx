@@ -39,7 +39,7 @@ const LoginForm = () => {
         duration: 3000,
         isClosable: true
       });
-      navigate('/dashboard');
+      navigate('/');
     } catch (error) {
       toast({
         title: 'Error al iniciar sesión',

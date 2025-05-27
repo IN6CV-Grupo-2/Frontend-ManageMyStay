@@ -1,4 +1,4 @@
-import { DashboardPage } from "./pages/dashboard/DashBoardPage"
+import { DashboardPage } from "./pages/dashboard/DashboardPage.jsx";
 import { LoginPage } from "./pages/login/LoginPage.jsx";
 import { RegisterPage } from "./pages/register/RegisterPage.jsx";
 

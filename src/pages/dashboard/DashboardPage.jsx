@@ -1,6 +1,6 @@
-import { div } from "framer-motion/client"
 import { Navbar } from "../../components/navbars/Navbar.jsx"
 import { Content } from "../../components/dashboards/Content.jsx"
+import Footer from "../../components/dashboards/Footer.jsx"
 
 export const DashboardPage = () => {
 
@@ -8,6 +8,7 @@ export const DashboardPage = () => {
         <div>
             <Navbar/>
             <Content/>
+            <Footer/>
         </div>
     )
 }
