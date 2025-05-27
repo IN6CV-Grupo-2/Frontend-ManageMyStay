@@ -22,32 +22,34 @@ apiClient.interceptors.request.use(
 
 export const saveService = async (data) => {
     try {
-        return await apiClient.post('/service/save/', data)
+        const res = await apiClient.post('/service/save/', data);
+        return { data: res.data, error: false };
     } catch (e) {
-        return{
+        return {
             error: true,
             e
-        }
+        };
     }
-}
+};
 
 export const getServices = async () => {
     try {
-        const res = await apiClient.get('/service/')
-        return res.data
+        const res = await apiClient.get('/service/');
+        return { data: res.data, error: false };
     } catch (e) {
-        return{
+        return {
             error: true,
             e
-        }
+        };
     }
-}
+};
 
 export const updateService = async (data, servicesId) => {
     try {
-        return await apiClient.put(`/services/update/${servicesId}`, data)
+        const res = await apiClient.put(`/service/update/${servicesId}`, data);
+        return { data: res.data, error: false };
     } catch (e) {
-        return{
+        return {
             error: true,
             e
         }
@@ -56,9 +58,9 @@ export const updateService = async (data, servicesId) => {
 
 export const deleteService = async (servicesId) => {
     try {
-        return await apiClient.delete(`/services/delete/${servicesId}`)
+        return await apiClient.delete(`/service/delete/${servicesId}`)
     } catch (e) {
-        return{
+        return {
             error: true,
             e
         }
@@ -66,12 +68,12 @@ export const deleteService = async (servicesId) => {
 }
 
 export const getServiceById = async (servicesId) => {
-     try {
+    try {
         return await apiClient.get(`/services/search/${servicesId}`)
-     } catch (e) {
-        return{
+    } catch (e) {
+        return {
             error: true,
             e
         }
-     }
+    }
 }

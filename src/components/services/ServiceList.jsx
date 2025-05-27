@@ -18,30 +18,32 @@ const ServiceList = ({ services, isLoading, onEdit, onDelete }) => {
             <Thead>
                 <Tr>
                     <Th>Nombre</Th>
+                    <Th>Precio</Th>
                     <Th>Descripción</Th>
                     <Th>Acciones</Th>
                 </Tr>
             </Thead>
             <Tbody>
                 {services.map((service) => (
-                    
-                    <Tr key={service.uid}>
+                    <Tr key={service._id}>
                         <Td>{service.name}</Td>
+                        <Td>Q. {service.price}</Td>
                         <Td>{service.description}</Td>
                         <Td>
-                            
                             <IconButton
                                 size="sm"
                                 colorScheme="yellow"
                                 icon={<EditIcon />}
                                 mr={2}
-                                onClick={() => onEdit(service.uid, service)}
+                                onClick={() => onEdit(service)}
+                                aria-label="Editar servicio"
                             />
                             <IconButton
                                 size="sm"
                                 colorScheme="red"
                                 icon={<DeleteIcon />}
-                                onClick={() => onDelete(service.uid)}
+                                onClick={() => onDelete(service._id)}
+                                aria-label="Eliminar servicio"
                             />
                         </Td>
                     </Tr>

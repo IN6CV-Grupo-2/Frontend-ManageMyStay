@@ -13,21 +13,33 @@ import {
     Textarea,
     useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const ServiceForm = ({ isOpen, onClose, onSubmit }) => {
-    const [form, setForm] = useState({ name: "", description: "" });
+const ServiceForm = ({ isOpen, onClose, onSubmit, serviceToEdit = null }) => {
+    const [form, setForm] = useState({ name: "", description: "", price: "" });
     const toast = useToast();
+
+    useEffect(() => {
+        if (serviceToEdit) {
+            setForm({
+                name: serviceToEdit.name || "",
+                description: serviceToEdit.description || "",
+                price: serviceToEdit.price?.toString() || "",
+            });
+        } else {
+            setForm({ name: "", description: "", price: "" });
+        }
+    }, [serviceToEdit, isOpen]);
 
     const handleChange = (e) => {
         setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const handleSubmit = async () => {
-        if (!form.name || !form.description) {
+        if (!form.name || !form.description || !form.price) {
             toast({
                 title: "Campos requeridos",
-                description: "Nombre y descripción son obligatorios.",
+                description: "Todos los campos son obligatorios.",
                 status: "warning",
                 duration: 3000,
                 isClosable: true,
@@ -35,16 +47,16 @@ const ServiceForm = ({ isOpen, onClose, onSubmit }) => {
             return;
         }
 
-        await onSubmit(form);
-        setForm({ name: "", description: "" });
+        await onSubmit({ ...form, price: Number(form.price) }, serviceToEdit?._id);
         onClose();
+        setForm({ name: "", description: "", price: "" });
     };
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>Crear Servicio</ModalHeader>
+                <ModalHeader>{serviceToEdit ? "Editar Servicio" : "Crear Servicio"}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                     <FormControl mb={3}>
@@ -56,7 +68,7 @@ const ServiceForm = ({ isOpen, onClose, onSubmit }) => {
                             placeholder="Ej: Limpieza"
                         />
                     </FormControl>
-                    <FormControl>
+                    <FormControl mb={3}>
                         <FormLabel>Descripción</FormLabel>
                         <Textarea
                             name="description"
@@ -65,11 +77,21 @@ const ServiceForm = ({ isOpen, onClose, onSubmit }) => {
                             placeholder="Describe el servicio"
                         />
                     </FormControl>
+                    <FormControl mb={3}>
+                        <FormLabel>Precio</FormLabel>
+                        <Input
+                            name="price"
+                            type="number"
+                            value={form.price}
+                            onChange={handleChange}
+                            placeholder=""
+                        />
+                    </FormControl>
                 </ModalBody>
 
                 <ModalFooter>
                     <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
-                        Guardar
+                        {serviceToEdit ? "Actualizar" : "Guardar"}
                     </Button>
                     <Button onClick={onClose}>Cancelar</Button>
                 </ModalFooter>
