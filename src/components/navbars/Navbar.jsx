@@ -10,7 +10,7 @@ const navItems = [
   { label: "Eventos", icon: FaCalendarAlt, path: "/events" },
 ];
  
-export const Navbar = ({ toggleColorMode, colorMode }) => {
+export const Navbar = () => {
   const bg = useColorModeValue("rgba(41, 87, 105, 0.82)", "rgba(34,42,41,0.95)");
   const color = useColorModeValue("#F9F7F2", "#7bc2c4");
   const activeColor = "#7bc2c4";
