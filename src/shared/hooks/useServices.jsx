@@ -16,7 +16,6 @@ export const useServices = () => {
         setIsLoading(true);
         try {
             const res = await getServicesRequest();
-            console.log("🔍 Respuesta completa de la API:", res);
             setServices(res?.data?.services || []);
         } catch (err) {
             toast.error("Error getting services");

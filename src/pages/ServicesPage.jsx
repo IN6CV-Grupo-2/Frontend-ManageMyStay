@@ -31,13 +31,13 @@ const ServicesPage = () => {
     };
 
     const handleEditClick = (service) => {
-        setServiceToEdit(service); // modo edición
+        setServiceToEdit(service);
         onOpen();
     };
 
-    const handleSubmit = async ( serviceId, formData ) => {
+    const handleSubmit = async ({ serviceId, formData }) => {
         if (serviceId) {
-            await editService(formData, serviceId);
+            await editService(serviceId, formData);
         } else {
             await createService(formData);
         }

@@ -47,7 +47,10 @@ const ServiceForm = ({ isOpen, onClose, onSubmit, serviceToEdit = null }) => {
             return;
         }
 
-        await onSubmit({ ...form, price: Number(form.price) }, serviceToEdit?._id);
+        await onSubmit({
+            serviceId: serviceToEdit?._id,
+            formData: { ...form, price: Number(form.price) }
+        });
         onClose();
         setForm({ name: "", description: "", price: "" });
     };
