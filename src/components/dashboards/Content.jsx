@@ -1,7 +1,9 @@
-
-import { Route,Routes } from "react-router-dom";
-import { PrincipalPage } from "./PrincipalPage";
+import { Route, Routes } from "react-router-dom";
+import { PrincipalPage } from "./PrincipalPage.jsx";
+import  EditOwnProfileForm  from '../../components/users/EditOwnProfileForm.jsx';
 import { Box } from "@chakra-ui/react";
+import UsersPage from "../../pages/user/UsersPage.jsx";
+import HotelsPage from "../../pages/hotel/HotelsPage.jsx";
 export const Content = () => {
     return(
 
@@ -12,7 +14,10 @@ export const Content = () => {
         boxSizing="border-box"
         overflow='hidden'>
             <Routes>
-                <Route path="/" element={<PrincipalPage/>}/>
+                <Route path="/" element={<PrincipalPage />} />
+                <Route path="/edit-profile" element={<EditOwnProfileForm />} />
+                <Route path="/users/*" element={<UsersPage/>}/>
+                <Route path="//hotels/*" element={<HotelsPage/>}/>
             </Routes>
         </Box>
     )

@@ -1,31 +1,59 @@
-import { Flex, Box, Button, IconButton, HStack, useColorModeValue, Spacer, Text, Menu, MenuButton, MenuList, MenuItem, Icon } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Button,
+  IconButton,
+  HStack,
+  useColorModeValue,
+  Spacer,
+  Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Icon,
+} from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaHotel, FaUserFriends, FaHome, FaCalendarAlt, FaBars, FaMoon, FaSun } from "react-icons/fa";
-import { DrawerButton } from './Drawer.jsx';
-import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaHotel,
+  FaUserFriends,
+  FaHome,
+  FaCalendarAlt,
+  FaBars,
+  FaMoon,
+  FaSun,
+  FaSignInAlt,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import { DrawerButton } from "./Drawer.jsx";
+import { useAuth } from "../../hooks/useAuth";
 
-import { useAuth } from '../../hooks/useAuth';
- 
 const navItems = [
   { label: "Inicio", icon: FaHome, path: "/" },
   { label: "Hoteles", icon: FaHotel, path: "/hotels" },
   { label: "Usuarios", icon: FaUserFriends, path: "/users" },
   { label: "Eventos", icon: FaCalendarAlt, path: "/events" },
 ];
- 
-export const Navbar = ({ toggleColorMode, colorMode }) => {
+
+export const Navbar = () => {
   const bg = useColorModeValue("rgba(41, 87, 105, 0.82)", "rgba(34,42,41,0.95)");
   const color = useColorModeValue("#F9F7F2", "#7bc2c4");
   const activeColor = "#7bc2c4";
-  const { isLoggedIn, logout } = useAuth();
+  const menuBg = useColorModeValue("#ffffff", "#2A2A2A");
+  const menuColor = useColorModeValue("#2E576A", "#fefefe");
+
   const navigate = useNavigate();
+  const { isLoggedIn, logout } = useAuth();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAuthenticated = isLoggedIn || !!user;
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
       logout();
-      navigate('/');
+      navigate("/");
     } else {
-      navigate('/login');
+      navigate("/login");
     }
   };
 
@@ -59,6 +87,7 @@ export const Navbar = ({ toggleColorMode, colorMode }) => {
 
       <Spacer />
 
+      {/* Navegación en escritorio */}
       <HStack spacing={6} display={{ base: "none", md: "flex" }}>
         {navItems.map((item) => (
           <NavLink
@@ -81,6 +110,7 @@ export const Navbar = ({ toggleColorMode, colorMode }) => {
         ))}
       </HStack>
 
+      {/* Menú hamburguesa móvil */}
       <Box display={{ base: "block", md: "none" }}>
         <Menu>
           <MenuButton
@@ -91,24 +121,35 @@ export const Navbar = ({ toggleColorMode, colorMode }) => {
             borderColor="#7bc2c4"
             aria-label="Open menu"
           />
-          <MenuList bg={bg} color={color}>
+          <MenuList bg={menuBg} color={menuColor}>
             {navItems.map((item) => (
               <MenuItem
                 key={item.label}
                 icon={<Icon as={item.icon} />}
-                bg={bg}
+                bg={menuBg}
                 _hover={{ bg: "#7bc2c4", color: "#2E576A" }}
                 onClick={() => navigate(item.path)}
               >
                 {item.label}
               </MenuItem>
             ))}
+            {!isAuthenticated && (
+              <>
+                <MenuItem icon={<FaSignInAlt />} onClick={() => navigate("/login")}>
+                  Iniciar sesión
+                </MenuItem>
+                <MenuItem icon={<FaUserFriends />} onClick={() => navigate("/register")}>
+                  Registrarse
+                </MenuItem>
+              </>
+            )}
           </MenuList>
         </Menu>
       </Box>
 
       <Spacer />
 
+      {/* Botón login/logout en escritorio */}
       <Button
         onClick={handleAuthClick}
         variant="outline"

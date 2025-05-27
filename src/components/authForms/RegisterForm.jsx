@@ -1,24 +1,29 @@
+import React, { useState } from 'react';
 import {
   Box,
+  Input,
   Button,
+  Stack,
   FormControl,
   FormLabel,
-  Input,
-  FormErrorMessage,
+  Flex,
+  Icon,
+  useColorModeValue,
   Heading,
-  VStack,
   useToast,
-  Text,
-  Link as ChakraLink,
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  IconButton
+  IconButton,
+  FormErrorMessage,
+  Text,
+  Link as ChakraLink,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { FaUserPlus, FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { authService } from '../../services/authService';
-import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+
+const meddleBg = "linear-gradient(135deg, #2E576A 0%, #B8807C 60%, #7BC2C4 100%)";
 
 const RegisterForm = () => {
   const [form, setForm] = useState({
@@ -34,6 +39,9 @@ const RegisterForm = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
+
+  const cardBg = useColorModeValue("#F9F7F2", "#2E2A29");
+  const inputBorder = "#7bc2c4";
 
   const handleChange = (field) => (e) => {
     setForm({ ...form, [field]: e.target.value });
@@ -59,7 +67,13 @@ const RegisterForm = () => {
     }
 
     try {
-      await authService.register(form);
+      await authService.register({
+        name: form.name,
+        surname: form.surname,
+        email: form.email,
+        password: form.password,
+      });
+
       toast({
         title: 'Usuario registrado',
         status: 'success',
@@ -79,73 +93,66 @@ const RegisterForm = () => {
   };
 
   return (
-    <Box maxW="400px" mx="auto" mt="10">
-      <Heading textAlign="center" mb="6">
-        Crear cuenta
-      </Heading>
-      <form onSubmit={handleSubmit}>
-        <VStack spacing="4">
-          <FormControl isInvalid={isInvalid('name')}>
-            <FormLabel>Nombre</FormLabel>
-            <InputGroup>
-              <InputLeftElement pointerEvents="none">
-                <FaUser color="gray" />
-              </InputLeftElement>
-              <Input
-                value={form.name}
-                onChange={handleChange('name')}
-                onBlur={handleBlur('name')}
-                placeholder="Tu nombre"
-              />
-            </InputGroup>
-            <FormErrorMessage>El nombre es requerido</FormErrorMessage>
-          </FormControl>
+    <Flex align="center" justify="center" minH="100vh" w="100vw" py={8} bg={meddleBg}>
+      <Box
+        bg={cardBg}
+        boxShadow="0 6px 32px 0 rgba(44,98,117,0.18)"
+        borderRadius="2xl"
+        p={10}
+        maxW="540px"
+        w="100%"
+        border="2px solid"
+        borderColor="rgba(123,194,196,0.20)"
+      >
+        <Stack align="center" mb={6}>
+          <Icon as={FaUserPlus} boxSize={10} color="#b8807c" />
+          <Heading fontSize="2xl" fontWeight="extrabold" color="#2e576a">
+            Crear cuenta
+          </Heading>
+        </Stack>
 
-          <FormControl isInvalid={isInvalid('surname')}>
-            <FormLabel>Apellido</FormLabel>
-            <InputGroup>
-              <InputLeftElement pointerEvents="none">
-                <FaUser color="gray" />
-              </InputLeftElement>
-              <Input
-                value={form.surname}
-                onChange={handleChange('surname')}
-                onBlur={handleBlur('surname')}
-                placeholder="Tu apellido"
-              />
-            </InputGroup>
-            <FormErrorMessage>El apellido es requerido</FormErrorMessage>
-          </FormControl>
+        <form onSubmit={handleSubmit}>
+          {[{ name: "name", label: "Nombre", icon: FaUser },
+            { name: "surname", label: "Apellido", icon: FaUser },
+            { name: "email", label: "Correo electrónico", icon: FaEnvelope, type: "email" }]
+            .map(({ name, label, icon, type = "text" }) => (
+              <FormControl key={name} mb={4} isInvalid={isInvalid(name)} isRequired>
+                <FormLabel color="#b8807c">{label}</FormLabel>
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none">
+                    {React.createElement(icon, { color: "gray" })}
+                  </InputLeftElement>
+                  <Input
+                    name={name}
+                    type={type}
+                    placeholder={label}
+                    value={form[name]}
+                    onChange={handleChange(name)}
+                    onBlur={handleBlur(name)}
+                    borderColor={inputBorder}
+                    focusBorderColor="#2e576a"
+                  />
+                </InputGroup>
+                <FormErrorMessage>Este campo es requerido</FormErrorMessage>
+              </FormControl>
+            ))}
 
-          <FormControl isInvalid={isInvalid('email')}>
-            <FormLabel>Email</FormLabel>
-            <InputGroup>
-              <InputLeftElement pointerEvents="none">
-                <FaEnvelope color="gray" />
-              </InputLeftElement>
-              <Input
-                type="email"
-                value={form.email}
-                onChange={handleChange('email')}
-                onBlur={handleBlur('email')}
-                placeholder="correo@ejemplo.com"
-              />
-            </InputGroup>
-            <FormErrorMessage>El email es requerido</FormErrorMessage>
-          </FormControl>
-
-          <FormControl isInvalid={isInvalid('password')}>
-            <FormLabel>Contraseña</FormLabel>
+          {/* Password */}
+          <FormControl mb={4} isInvalid={isInvalid('password')} isRequired>
+            <FormLabel color="#b8807c">Contraseña</FormLabel>
             <InputGroup>
               <InputLeftElement pointerEvents="none">
                 <FaLock color="gray" />
               </InputLeftElement>
               <Input
                 type={showPassword ? 'text' : 'password'}
+                name="password"
+                placeholder="Contraseña"
                 value={form.password}
                 onChange={handleChange('password')}
                 onBlur={handleBlur('password')}
-                placeholder="********"
+                borderColor={inputBorder}
+                focusBorderColor="#2e576a"
               />
               <InputRightElement>
                 <IconButton
@@ -160,18 +167,22 @@ const RegisterForm = () => {
             <FormErrorMessage>La contraseña es requerida</FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={isPasswordMismatch}>
-            <FormLabel>Confirmar Contraseña</FormLabel>
+          {/* Confirm Password */}
+          <FormControl mb={6} isInvalid={isPasswordMismatch} isRequired>
+            <FormLabel color="#b8807c">Confirmar Contraseña</FormLabel>
             <InputGroup>
               <InputLeftElement pointerEvents="none">
                 <FaLock color="gray" />
               </InputLeftElement>
               <Input
                 type={showConfirm ? 'text' : 'password'}
+                name="confirmPassword"
+                placeholder="Confirmar Contraseña"
                 value={form.confirmPassword}
                 onChange={handleChange('confirmPassword')}
                 onBlur={handleBlur('confirmPassword')}
-                placeholder="********"
+                borderColor={inputBorder}
+                focusBorderColor="#2e576a"
               />
               <InputRightElement>
                 <IconButton
@@ -183,22 +194,28 @@ const RegisterForm = () => {
                 />
               </InputRightElement>
             </InputGroup>
-            <FormErrorMessage>Las contraseñas no coinciden</FormErrorMessage>
+            {isPasswordMismatch && (
+              <FormErrorMessage>Las contraseñas no coinciden</FormErrorMessage>
+            )}
           </FormControl>
 
-          <Button colorScheme="teal" width="full" type="submit">
-            Registrarse
-          </Button>
+          <Stack direction="row" spacing={4} justify="center">
+            <Button type="submit" colorScheme="teal" width="full">
+              Registrarse
+            </Button>
+          </Stack>
 
-          <Text fontSize="sm">
-            ¿Ya tienes cuenta?{' '}
-            <ChakraLink as={Link} to="/login" color="teal.500">
-              Inicia sesión aquí
-            </ChakraLink>
-          </Text>
-        </VStack>
-      </form>
-    </Box>
+          <Stack mt={4} align="center">
+            <Text fontSize="sm">
+              ¿Ya tienes cuenta?{' '}
+              <ChakraLink as={Link} to="/login" color="teal.500">
+                Inicia sesión aquí
+              </ChakraLink>
+            </Text>
+          </Stack>
+        </form>
+      </Box>
+    </Flex>
   );
 };
 

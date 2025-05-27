@@ -3,9 +3,9 @@ import { LoginPage } from "./pages/login/LoginPage.jsx";
 import { RegisterPage } from "./pages/register/RegisterPage.jsx";
 
 const routes = [
-    {path: '/login', element: <LoginPage /> },
-    {path:"/register", element: <RegisterPage />} ,
-    {path: '/*', element: <DashboardPage/>}
-]
+  { path: '/login', element: <LoginPage /> },
+  { path: '/register', element: <RegisterPage /> },
+  { path: '/*', element: <DashboardPage /> }, // ← nota el asterisco
+];
 
 export default routes;
