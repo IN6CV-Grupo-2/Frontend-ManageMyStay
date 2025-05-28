@@ -77,3 +77,61 @@ export const getServiceById = async (servicesId) => {
         }
     }
 }
+
+export const createBill = async (data) => {
+    try {
+        const res = await apiClient.post('/bill/', data);
+        return { data: res.data, error: false };
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
+
+export const getBills = async () => {
+    try {
+        const res = await apiClient.get('/bill/');
+        return { data: res.data, error: false };
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
+
+export const getBillById = async (billId) => {
+    try {
+        return await apiClient.get(`/bill/${billId}`)
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
+
+export const updateBill = async (data, billId) => {
+    try {
+        const res = await apiClient.put(`/bill/${billId}`, data);
+        return { data: res.data, error: false };
+    } catch (e) {
+        return { 
+            error: true,
+            e
+        }
+    }
+}
+
+export const deleteBill = async (billId) => {
+    try {
+        return await apiClient.delete(`/bill/${billId}`)
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
