@@ -4,6 +4,7 @@ import  EditOwnProfileForm  from '../../components/users/EditOwnProfileForm.jsx'
 import { Box } from "@chakra-ui/react";
 import UsersPage from "../../pages/user/UsersPage.jsx";
 import HotelsPage from "../../pages/hotel/HotelsPage.jsx";
+import RoomsPage from "../../pages/rooms/RoomsPage.jsx";
 export const Content = () => {
     return(
 
@@ -17,7 +18,8 @@ export const Content = () => {
                 <Route path="/" element={<PrincipalPage />} />
                 <Route path="/edit-profile" element={<EditOwnProfileForm />} />
                 <Route path="/users/*" element={<UsersPage/>}/>
-                <Route path="//hotels/*" element={<HotelsPage/>}/>
+                <Route path="/hotels/*" element={<HotelsPage/>}/>
+                <Route path="/rooms/:id/*" element={<RoomsPage/>}/>
             </Routes>
         </Box>
     )

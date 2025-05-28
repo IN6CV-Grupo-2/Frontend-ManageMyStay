@@ -11,12 +11,19 @@ import {
   useColorModeValue
 } from '@chakra-ui/react';
 import { FaHotel, FaStar, FaMapMarkerAlt, FaDollarSign, FaArrowLeft, FaRegListAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const meddleBg = "linear-gradient(135deg, #2E576A 0%, #B8807C 60%, #7BC2C4 100%)";
 
+
 const HotelDetails = ({ hotel, onBack }) => {
   if (!hotel) return null;
+  const navigate = useNavigate();
   const cardBg = useColorModeValue("#F9F7F2", "#2E2A29");
+
+  const handleNavigateRooms = () => {
+    navigate(`/rooms/${hotel.uid}`)
+  }
   return (
     <Flex minH="100vh" w="100vw" justify="center" align="center" py={12} bg={meddleBg}>
       <Box maxW="3xl" w="100%" mx="auto" p={8} bg={cardBg} borderRadius="2xl" boxShadow="2xl" border="2px solid" borderColor="#7bc2c4">
@@ -44,7 +51,7 @@ const HotelDetails = ({ hotel, onBack }) => {
           </Text>
           <Flex gap={4} mt={6}>
             <Button leftIcon={<FaArrowLeft />} colorScheme="teal" onClick={onBack}>Volver</Button>
-            <Button colorScheme="blue" variant="solid">Reservar ahora</Button>
+            <Button colorScheme="blue" variant="solid" onClick={handleNavigateRooms}>Reservar ahora</Button>
           </Flex>
         </Stack>
       </Box>
