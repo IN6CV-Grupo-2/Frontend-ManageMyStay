@@ -7,7 +7,7 @@ import {
     createBill as createBillRequest,
     updateBill as updateBillRequest,
     deleteBill as deleteBillRequest,
-} from "../../services/api.jsx";
+} from "../services/api.jsx";
 
 export const useBills = () => {
     const [bills, setBills] = useState([]);

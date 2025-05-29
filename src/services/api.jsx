@@ -1,28 +1,10 @@
-import axios from "axios";
+import axios from "./api.js";
 
-const apiClient = axios.create({
-    baseURL: 'http://127.0.0.1:3000/manageMyStay/v1',
-    timeout: 5000
-})
 
-apiClient.interceptors.request.use(
-    (config) => {
-        const useUserDetails = localStorage.getItem('user');
-
-        if (useUserDetails) {
-            const token = JSON.parse(useUserDetails).token
-            config.headers["x-token"] = token
-        }
-        return config
-    },
-    (e) => {
-        return Promise.reject(e);
-    }
-)
 
 export const saveService = async (data) => {
     try {
-        const res = await apiClient.post('/service/save/', data);
+        const res = await axios.post('/service/save/', data);
         return { data: res.data, error: false };
     } catch (e) {
         return {
@@ -34,7 +16,7 @@ export const saveService = async (data) => {
 
 export const getServices = async () => {
     try {
-        const res = await apiClient.get('/service/');
+        const res = await axios.get('/service/');
         return { data: res.data, error: false };
     } catch (e) {
         return {
@@ -46,7 +28,7 @@ export const getServices = async () => {
 
 export const updateService = async (data, servicesId) => {
     try {
-        const res = await apiClient.put(`/service/update/${servicesId}`, data);
+        const res = await axios.put(`/service/update/${servicesId}`, data);
         return { data: res.data, error: false };
     } catch (e) {
         return {
@@ -58,7 +40,7 @@ export const updateService = async (data, servicesId) => {
 
 export const deleteService = async (servicesId) => {
     try {
-        return await apiClient.delete(`/service/delete/${servicesId}`)
+        return await axios.delete(`/service/delete/${servicesId}`)
     } catch (e) {
         return {
             error: true,
@@ -69,7 +51,7 @@ export const deleteService = async (servicesId) => {
 
 export const getServiceById = async (servicesId) => {
     try {
-        return await apiClient.get(`/services/search/${servicesId}`)
+        return await axios.get(`/services/search/${servicesId}`)
     } catch (e) {
         return {
             error: true,
@@ -80,7 +62,7 @@ export const getServiceById = async (servicesId) => {
 
 export const createBill = async (data) => {
     try {
-        const res = await apiClient.post('/bill/', data);
+        const res = await axios.post('/bill/', data);
         return { data: res.data, error: false };
     } catch (e) {
         return {
@@ -92,7 +74,7 @@ export const createBill = async (data) => {
 
 export const getBills = async () => {
     try {
-        const res = await apiClient.get('/bill/');
+        const res = await axios.get('/bill/');
         return { data: res.data, error: false };
     } catch (e) {
         return {
@@ -104,7 +86,7 @@ export const getBills = async () => {
 
 export const getBillById = async (billId) => {
     try {
-        return await apiClient.get(`/bill/${billId}`)
+        return await axios.get(`/bill/${billId}`)
     } catch (e) {
         return {
             error: true,
@@ -115,7 +97,7 @@ export const getBillById = async (billId) => {
 
 export const updateBill = async (data, billId) => {
     try {
-        const res = await apiClient.put(`/bill/${billId}`, data);
+        const res = await axios.put(`/bill/${billId}`, data);
         return { data: res.data, error: false };
     } catch (e) {
         return { 
@@ -127,7 +109,7 @@ export const updateBill = async (data, billId) => {
 
 export const deleteBill = async (billId) => {
     try {
-        return await apiClient.delete(`/bill/${billId}`)
+        return await axios.delete(`/bill/${billId}`)
     } catch (e) {
         return {
             error: true,

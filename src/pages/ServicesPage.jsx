@@ -7,7 +7,7 @@ import {
     Input,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useServices } from "../shared/hooks/useServices.jsx";
+import { useServices } from "../hooks/useServices.jsx";
 import ServiceList from "../components/services/ServiceList.jsx";
 import ServiceForm from "../components/services/ServiceForm.jsx";
 

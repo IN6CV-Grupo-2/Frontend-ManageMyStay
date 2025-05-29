@@ -1,4 +1,4 @@
-import { useBills } from '../shared/hooks/useBills.jsx';
+import { useBills } from '../hooks/useBills.jsx';
 import {
     Box,
     Heading,

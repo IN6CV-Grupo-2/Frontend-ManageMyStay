@@ -8,19 +8,23 @@ import {
     useDisclosure,
     Button,
     Input,
-    DrawerFooter
-  } from '@chakra-ui/react'
+    DrawerFooter,
+    Avatar,
+    AvatarBadge,
+} from '@chakra-ui/react'
 
-  import React from 'react'
+import React from 'react'
 export const DrawerButton = () => {
-    
+
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
-      
+
     return (
-         <>
-            <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
-                Open
+        <>
+            <Button ref={btnRef} colorScheme='teal' onClick={onOpen} w="50px" h="50px" borderRadius="full">
+                <Avatar w="52px" h="52px">
+                    <AvatarBadge boxSize='1.25em' bg='green.500' />
+                </Avatar>
             </Button>
             <Drawer
                 isOpen={isOpen}
@@ -30,21 +34,21 @@ export const DrawerButton = () => {
             >
                 <DrawerOverlay />
                 <DrawerContent>
-                <DrawerCloseButton />
-                <DrawerHeader>Create your account</DrawerHeader>
+                    <DrawerCloseButton />
+                    <DrawerHeader>Create your account</DrawerHeader>
 
-                <DrawerBody>
-                    <Input placeholder='Type here...' />
-                </DrawerBody>
+                    <DrawerBody>
+                        <Input placeholder='Type here...' />
+                    </DrawerBody>
 
-                <DrawerFooter>
-                    <Button variant='outline' mr={3} onClick={onClose}>
-                    Cancel
-                    </Button>
-                    <Button colorScheme='blue'>Save</Button>
-                </DrawerFooter>
+                    <DrawerFooter>
+                        <Button variant='outline' mr={3} onClick={onClose}>
+                            Cancel
+                        </Button>
+                        <Button colorScheme='blue'>Save</Button>
+                    </DrawerFooter>
                 </DrawerContent>
             </Drawer>
-          </>
+        </>
     )
 }

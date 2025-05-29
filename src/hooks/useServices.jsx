@@ -6,7 +6,7 @@ import {
     saveService as saveServiceRequest,
     updateService as updateServiceRequest,
     deleteService as deleteServiceRequest,
-} from "../../services/api.jsx";
+} from "../services/api.jsx";
 
 export const useServices = () => {
     const [services, setServices] = useState([]);

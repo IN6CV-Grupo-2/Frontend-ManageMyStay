@@ -12,9 +12,6 @@ import {
     Input,
     Textarea,
     Select,
-    CheckboxGroup,
-    Stack,
-    Checkbox,
     useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
@@ -28,14 +25,25 @@ const BillForm = ({ isOpen, onClose, onSubmit }) => {
     const [allReservations, setAllReservations] = useState([]);
     const toast = useToast();
 
+    useEffect(() => {
+        if (isOpen) {
+            fetchData();
+        }
+    }, [isOpen]);
+
     const fetchData = async () => {
         try {
             const [usersRes, reservationsRes] = await Promise.all([
                 axios.get('/api/users'),
                 axios.get('/api/reservations'),
             ]);
-            setAllUsers(usersRes.data);
-            setAllReservations(reservationsRes.data);
+
+            console.log("Respuesta de users:", usersRes.data);
+            console.log("Respuesta de reservations:", reservationsRes.data);
+
+            // ✅ Si la API devuelve { users: [...] }, accede a esa propiedad
+            setAllUsers(usersRes.data.users || []);
+            setAllReservations(reservationsRes.data.reservations || []);
         } catch (e) {
             toast({
                 title: 'Error al cargar datos',
@@ -46,14 +54,6 @@ const BillForm = ({ isOpen, onClose, onSubmit }) => {
             });
         }
     };
-
-    useEffect(() => {
-        if (!isOpen) {
-            setDetails('');
-            setCostumer('');
-            setReservations([]);
-        }
-    }, [isOpen]);
 
     const handleSubmit = () => {
         if (!costumer || !details || reservations.length === 0) {
@@ -103,19 +103,22 @@ const BillForm = ({ isOpen, onClose, onSubmit }) => {
 
                     <FormControl mb={3}>
                         <FormLabel>Reservaciones</FormLabel>
-                        <CheckboxGroup
-                            colorScheme="blue"
+                        <Select
+                            placeholder="Selecciona una o más reservaciones"
+                            multiple
                             value={reservations}
-                            onChange={setReservations}
+                            onChange={(e) => {
+                                const selected = Array.from(e.target.selectedOptions).map(opt => opt.value);
+                                setReservations(selected);
+                            }}
+                            height="auto"
                         >
-                            <Stack spacing={2}>
-                                {allReservations.map((res) => (
-                                    <Checkbox key={res._id} value={res._id}>
-                                        {res.code || `Reservación ${res._id}`}
-                                    </Checkbox>
-                                ))}
-                            </Stack>
-                        </CheckboxGroup>
+                            {allReservations.map((res) => (
+                                <option key={res._id} value={res._id}>
+                                    {res.code || `Reservación ${res._id}`}
+                                </option>
+                            ))}
+                        </Select>
                     </FormControl>
                 </ModalBody>
 
