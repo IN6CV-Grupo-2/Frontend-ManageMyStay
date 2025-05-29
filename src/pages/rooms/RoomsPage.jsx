@@ -4,12 +4,14 @@ import { getRooms, addRoom, updateRoom, deleteRoom } from "../../services/roomSe
 import RoomCard from "../../components/room/RoomCard.jsx";
 import RoomForm from "../../components/room/RoomForm.jsx";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const RoomsPage = () => {
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {id } = useParams(); // id del hotel por defecto
+  const navigate = useNavigate();
 
   const fetchRooms = async () => {
     const data = await getRooms(id);
@@ -58,6 +60,10 @@ const RoomsPage = () => {
     }, 0);
   };
 
+  const handleReservationCreate = (id) => {
+    navigate(`/reservations/create/${id}`)
+  }
+
   return (
     <Box p={6}>
       <Button colorScheme="teal" mb={4} onClick={handleAdd}>
@@ -76,7 +82,7 @@ const RoomsPage = () => {
                 room={room}
                 onEdit={() => handleEdit(room)}
                 onDelete={() => handleDelete(room._id)}
-                onReserve={() => alert(`Reserved Room #${room.number}`)}
+                onReserve={() => handleReservationCreate(room._id)}
               />
             ))
           )}

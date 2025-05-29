@@ -5,6 +5,7 @@ import { Box } from "@chakra-ui/react";
 import UsersPage from "../../pages/user/UsersPage.jsx";
 import HotelsPage from "../../pages/hotel/HotelsPage.jsx";
 import RoomsPage from "../../pages/rooms/RoomsPage.jsx";
+import {ReservationForm} from '../../components/reservations/FormReservation.jsx';
 export const Content = () => {
     return(
 
@@ -20,6 +21,7 @@ export const Content = () => {
                 <Route path="/users/*" element={<UsersPage/>}/>
                 <Route path="/hotels/*" element={<HotelsPage/>}/>
                 <Route path="/rooms/:id/*" element={<RoomsPage/>}/>
+                <Route path="/reservations/create/:id" element={<ReservationForm mode={'create'}/>}/>
             </Routes>
         </Box>
     )
