@@ -37,7 +37,7 @@ export const DrawerButton = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("x-token");
 
   const {
     isOpen: isLogoutOpen,
@@ -74,7 +74,7 @@ export const DrawerButton = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    localStorage.removeItem("x-token");
     onLogoutClose();
     onClose();
     navigate("/login");

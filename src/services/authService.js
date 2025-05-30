@@ -19,7 +19,7 @@ const login = async (email, password) => {
     const { token } = response.data.userDetails;
 
     // Guardar token para uso futuro
-    localStorage.setItem('token', token);
+    localStorage.setItem('x-token', token);
 
     return response.data;
   } catch (error) {

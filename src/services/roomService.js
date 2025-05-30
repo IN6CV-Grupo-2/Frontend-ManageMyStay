@@ -12,7 +12,7 @@ const apiRoom = axios.create({
 
 // Interceptor para añadir el token dinámicamente desde localStorage
 apiRoom.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token'); // debe guardarse como 'token' al hacer login
+  const token = localStorage.getItem('x-token'); // debe guardarse como 'token' al hacer login
   if (token) {
     config.headers['x-token'] = token;
   }
