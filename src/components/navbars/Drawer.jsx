@@ -67,6 +67,11 @@ export const DrawerButton = () => {
     navigate("/edit-profile");
   };
 
+  const handleNavigateReservations = () => {
+    onClose();
+    navigate("/reservations");
+  }
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -121,6 +126,14 @@ export const DrawerButton = () => {
                 </Text>
 
                 <Box pt={4} w="100%">
+                  <Button 
+                    colorScheme="teal"
+                    w="100%"
+                    onClick={handleNavigateReservations}
+                    mb={4}
+                  >
+                    My Reservations
+                  </Button>
                   <Button
                     colorScheme="teal"
                     w="100%"
