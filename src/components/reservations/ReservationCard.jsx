@@ -33,7 +33,7 @@ export const ReservationCard = ({reservation, onDelete}) => {
 
         <Text><strong>Check-In:</strong> {new Date(reservation.checkIn).toLocaleDateString()}</Text>
         <Text><strong>Check-Out:</strong> {new Date(reservation.checkOut).toLocaleDateString()}</Text>
-        <Text><strong>Room:</strong> {reservation.rooms}</Text>
+        <Text><strong>Room:</strong> {reservation.rooms} #104</Text>
         <Text><strong>Hotel:</strong> {reservation.hotel.name}</Text>
 
         <HStack spacing={3} pt={3}>

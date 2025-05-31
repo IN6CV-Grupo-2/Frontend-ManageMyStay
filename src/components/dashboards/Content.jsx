@@ -8,7 +8,10 @@ import RoomsPage from "../../pages/rooms/RoomsPage.jsx";
 import { ReservationsPage } from "../../pages/reservations/ReservationsPage.jsx";
 import {ReservationForm} from '../../components/reservations/FormReservation.jsx';
 import ServicesPage from "../../pages/ServicesPage.jsx";
-import BillPage from "../../pages/BillPage.jsx"
+import BillPage from "../../pages/BillPage.jsx";
+import  EventsPage  from "../../pages/event/EventsPage.jsx";
+import EventDetails from "../../pages/event/EventDetails.jsx";
+import EventFormUpdate from "../../pages/event/EventFormUpdate.jsx";
 
 export const Content = () => {
     return(
@@ -30,6 +33,9 @@ export const Content = () => {
                 <Route path="/reservations/edit/:id" element={<ReservationForm mode={'edit'} />} />
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/bills" element={<BillPage />} />
+                <Route path="/events" element={<EventsPage/>}/>
+                <Route path="/events/:id" element={<EventDetails/>}/>
+                <Route path="/events/update/:id" element={<EventFormUpdate/>}/>
             </Routes>
         </Box>
     )

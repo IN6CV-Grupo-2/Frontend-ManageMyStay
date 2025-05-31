@@ -18,7 +18,8 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useBills } from '../../hooks/useBills.jsx';
-import { getReservationByHotel } from '../../services/reservationService.js';
+import { getReservationByUser } from '../../services/reservationService.js';
+import { useDecodedAuth } from '@/context/AuthContext.jsx';
 
 const BillForm = ({ isOpen, onClose }) => {
     const [selectedReservation, setSelectedReservation] = useState('');
@@ -28,21 +29,27 @@ const BillForm = ({ isOpen, onClose }) => {
     const toast = useToast();
     const { createAutoBill } = useBills();
 
+    const {auth} = useDecodedAuth()
+
     useEffect(() => {
-        const fetchReservations = async () => {
+        const fetchReservations = async (id) => {
             setIsLoading(true);
-            const res = await getReservationByHotel();
+
+            const res = await getReservationByUser(id);
+
             if (res.error) {
-                setError(res.e?.response?.data?.msg || "Error al obtener reservaciones");
+                setError(res?.e?.response?.data?.msg || 'Error al obtener reservaciones');
             } else {
                 setReservations(res || []);
                 setError(null);
             }
+
             setIsLoading(false);
         };
 
         if (isOpen) {
-            fetchReservations();
+            setSelectedReservation('');
+            fetchReservations(auth.uid);
         }
     }, [isOpen]);
 
@@ -56,9 +63,26 @@ const BillForm = ({ isOpen, onClose }) => {
             });
             return;
         }
-        await createAutoBill(selectedReservation);
-        setSelectedReservation('');
-        onClose();
+
+        try {
+            await createAutoBill(selectedReservation);
+            toast({
+                title: 'Factura generada exitosamente',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            });
+            setSelectedReservation('');
+            onClose();
+        } catch (error) {
+            toast({
+                title: 'Error al generar la factura',
+                description: error?.response?.data?.msg || 'Intenta nuevamente',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+        }
     };
 
     return (
@@ -74,21 +98,23 @@ const BillForm = ({ isOpen, onClose }) => {
                                 <Spinner />
                             ) : error ? (
                                 <Text color="red.500">Error: {error}</Text>
+                            ) : reservations.length === 0 ? (
+                                <Text>No hay reservaciones disponibles.</Text>
                             ) : (
-                                <FormControl>
+                                <FormControl isRequired>
                                     <FormLabel>Selecciona una Reservación</FormLabel>
                                     <Select
                                         placeholder="Selecciona una reservación"
                                         value={selectedReservation}
                                         onChange={(e) => setSelectedReservation(e.target.value)}
-                                    >
+                                        >
                                         {reservations.map((res) => (
                                             <option key={res._id} value={res._id}>
-                                                {res.code || `Reservación ${res._id}`}
+                                            {res.code || `Reservación ${res._id}`}
                                             </option>
                                         ))}
                                     </Select>
-                                </FormControl>
+                             </FormControl>
                             )}
                         </VStack>
                     </SlideFade>
@@ -97,7 +123,16 @@ const BillForm = ({ isOpen, onClose }) => {
                     <Button onClick={onClose} mr={3}>
                         Cancelar
                     </Button>
-                    <Button colorScheme="blue" onClick={handleGenerate} isDisabled={isLoading || error}>
+                    <Button
+                        colorScheme="blue"
+                        onClick={handleGenerate}
+                        isDisabled={
+                            isLoading ||
+                            error ||
+                            !selectedReservation ||
+                            reservations.length === 0
+                        }
+                    >
                         Generar
                     </Button>
                 </ModalFooter>
