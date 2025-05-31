@@ -1,40 +1,33 @@
-import {
-    Box,
-    Heading,
-    Button,
-    Spinner,
-    Text,
-    useDisclosure,
-    Flex,
-} from '@chakra-ui/react';
 import { useBills } from '../hooks/useBills.jsx';
 import BillTable from '../components/bills/BillTable.jsx';
-import BillForm from '../components/bills/BillForm.jsx';
+import { useDisclosure } from '@chakra-ui/react';
+import { useState } from 'react';
 
-const BillPage = () => {
-    const { bills, isLoading, error } = useBills();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+const BillsPage = () => {
+  const {
+    bills,
+    removeBill,
+    editBill,
+    getBillById,
+  } = useBills();
 
-    return (
-        <Box p={8} bg="gray.50" minH="100vh">
-            <Flex justify="space-between" align="center" mb={6}>
-                <Heading>Gestión de Facturas</Heading>
-                <Button colorScheme="blue" onClick={onOpen}>
-                    Generar Factura desde Reservación
-                </Button>
-            </Flex>
+  const [editingBill, setEditingBill] = useState(null);
 
-            {isLoading ? (
-                <Spinner size="xl" />
-            ) : error ? (
-                <Text color="red.500">Error: {error}</Text>
-            ) : (
-                <BillTable bills={bills} />
-            )}
+  const handleEdit = (bill) => {
+    setEditingBill(bill);
+    // aquí puedes abrir un modal de edición si lo tienes
+  };
 
-            <BillForm isOpen={isOpen} onClose={onClose} />
-        </Box>
-    );
+  const handleDelete = async (id) => {
+    await removeBill(id);
+  };
+
+  return (
+    <>
+      <BillTable bills={bills} onEdit={handleEdit} onDelete={handleDelete} />
+      {/* Aquí podrías mostrar un modal con <BillEditForm bill={editingBill} /> */}
+    </>
+  );
 };
 
-export default BillPage;
+export default BillsPage;
