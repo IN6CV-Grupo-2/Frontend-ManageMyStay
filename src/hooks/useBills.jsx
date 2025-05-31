@@ -7,6 +7,7 @@ import {
     createBill as createBillRequest,
     updateBill as updateBillRequest,
     deleteBill as deleteBillRequest,
+    createBillFromReservation as createBillFromReservationRequest
 } from "../services/api.jsx";
 
 export const useBills = () => {
@@ -18,7 +19,7 @@ export const useBills = () => {
         setIsLoading(true);
         try {
             const res = await getBillsRequest();
-            setBills(res?.data?.bills || []);
+            setBills(res?.data || []);
             setError(null);
         } catch (err) {
             toast.error("Error al obtener facturas");
@@ -34,7 +35,19 @@ export const useBills = () => {
             toast.error(res.e?.response?.data?.msg || "Error al crear factura");
             setError(res.e?.message || "Error al crear factura");
         } else {
-            toast.success("Factura creada");
+            toast.success("Factura creada correctamente");
+            setError(null);
+            await getBills();
+        }
+    };
+
+    const createAutoBill = async (reservationId) => {
+        const res = await createBillFromReservationRequest(reservationId);
+        if (res.error) {
+            toast.error(res.e?.response?.data?.msg || "Error al generar factura automática");
+            setError(res.e?.message || "Error al generar factura automática");
+        } else {
+            toast.success("Factura automática creada");
             setError(null);
             await getBills();
         }
@@ -57,7 +70,7 @@ export const useBills = () => {
             toast.error(res.e?.response?.data?.msg || "Error al actualizar factura");
             setError(res.e?.message || "Error al actualizar factura");
         } else {
-            toast.success("Factura actualizada");
+            toast.success("Factura actualizada correctamente");
             setError(null);
             await getBills();
         }
@@ -85,6 +98,7 @@ export const useBills = () => {
         error,
         getBills,
         createBill,
+        createAutoBill,
         getBillById,
         editBill,
         removeBill,

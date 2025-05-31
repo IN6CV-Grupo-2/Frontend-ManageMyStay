@@ -9,125 +9,96 @@ import {
     Button,
     FormControl,
     FormLabel,
-    Input,
-    Textarea,
     Select,
     useToast,
+    VStack,
+    SlideFade,
+    Spinner,
+    Text,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useBills } from '../../hooks/useBills.jsx';
+import { getReservationByHotel } from '../../services/reservationService.js';
 
-const BillForm = ({ isOpen, onClose, onSubmit }) => {
-    const [details, setDetails] = useState('');
-    const [costumer, setCostumer] = useState('');
+const BillForm = ({ isOpen, onClose }) => {
+    const [selectedReservation, setSelectedReservation] = useState('');
     const [reservations, setReservations] = useState([]);
-    const [allUsers, setAllUsers] = useState([]);
-    const [allReservations, setAllReservations] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
     const toast = useToast();
+    const { createAutoBill } = useBills();
 
     useEffect(() => {
+        const fetchReservations = async () => {
+            setIsLoading(true);
+            const res = await getReservationByHotel();
+            if (res.error) {
+                setError(res.e?.response?.data?.msg || "Error al obtener reservaciones");
+            } else {
+                setReservations(res || []);
+                setError(null);
+            }
+            setIsLoading(false);
+        };
+
         if (isOpen) {
-            fetchData();
+            fetchReservations();
         }
     }, [isOpen]);
 
-    const fetchData = async () => {
-        try {
-            const [usersRes, reservationsRes] = await Promise.all([
-                axios.get('/api/users'),
-                axios.get('/api/reservations'),
-            ]);
-
-            console.log("Respuesta de users:", usersRes.data);
-            console.log("Respuesta de reservations:", reservationsRes.data);
-
-            // ✅ Si la API devuelve { users: [...] }, accede a esa propiedad
-            setAllUsers(usersRes.data.users || []);
-            setAllReservations(reservationsRes.data.reservations || []);
-        } catch (e) {
+    const handleGenerate = async () => {
+        if (!selectedReservation) {
             toast({
-                title: 'Error al cargar datos',
-                description: e.message,
-                status: 'error',
-                duration: 4000,
-                isClosable: true,
-            });
-        }
-    };
-
-    const handleSubmit = () => {
-        if (!costumer || !details || reservations.length === 0) {
-            return toast({
-                title: 'Campos incompletos',
+                title: 'Selecciona una reservación',
                 status: 'warning',
                 duration: 3000,
                 isClosable: true,
             });
+            return;
         }
-
-        onSubmit({ costumer, details, reservations });
-        setDetails('');
-        setCostumer('');
-        setReservations([]);
+        await createAutoBill(selectedReservation);
+        setSelectedReservation('');
+        onClose();
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
+        <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered motionPreset="slideInBottom">
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>Crear Factura</ModalHeader>
+                <ModalHeader>Generar Factura Automática</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                    <FormControl mb={3}>
-                        <FormLabel>Cliente</FormLabel>
-                        <Select
-                            placeholder="Selecciona un cliente"
-                            value={costumer}
-                            onChange={(e) => setCostumer(e.target.value)}
-                        >
-                            {allUsers.map((user) => (
-                                <option key={user._id} value={user._id}>
-                                    {user.name}
-                                </option>
-                            ))}
-                        </Select>
-                    </FormControl>
-
-                    <FormControl mb={3}>
-                        <FormLabel>Detalles</FormLabel>
-                        <Textarea
-                            value={details}
-                            onChange={(e) => setDetails(e.target.value)}
-                        />
-                    </FormControl>
-
-                    <FormControl mb={3}>
-                        <FormLabel>Reservaciones</FormLabel>
-                        <Select
-                            placeholder="Selecciona una o más reservaciones"
-                            multiple
-                            value={reservations}
-                            onChange={(e) => {
-                                const selected = Array.from(e.target.selectedOptions).map(opt => opt.value);
-                                setReservations(selected);
-                            }}
-                            height="auto"
-                        >
-                            {allReservations.map((res) => (
-                                <option key={res._id} value={res._id}>
-                                    {res.code || `Reservación ${res._id}`}
-                                </option>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <SlideFade in={isOpen} offsetY="20px">
+                        <VStack spacing={4}>
+                            {isLoading ? (
+                                <Spinner />
+                            ) : error ? (
+                                <Text color="red.500">Error: {error}</Text>
+                            ) : (
+                                <FormControl>
+                                    <FormLabel>Selecciona una Reservación</FormLabel>
+                                    <Select
+                                        placeholder="Selecciona una reservación"
+                                        value={selectedReservation}
+                                        onChange={(e) => setSelectedReservation(e.target.value)}
+                                    >
+                                        {reservations.map((res) => (
+                                            <option key={res._id} value={res._id}>
+                                                {res.code || `Reservación ${res._id}`}
+                                            </option>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            )}
+                        </VStack>
+                    </SlideFade>
                 </ModalBody>
-
                 <ModalFooter>
                     <Button onClick={onClose} mr={3}>
                         Cancelar
                     </Button>
-                    <Button colorScheme="blue" onClick={handleSubmit}>
-                        Guardar
+                    <Button colorScheme="blue" onClick={handleGenerate} isDisabled={isLoading || error}>
+                        Generar
                     </Button>
                 </ModalFooter>
             </ModalContent>
