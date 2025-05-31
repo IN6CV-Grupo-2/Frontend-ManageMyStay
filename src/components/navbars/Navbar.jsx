@@ -6,12 +6,11 @@ import {
   HStack,
   useColorModeValue,
   Spacer,
-  Text,
+  Icon,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  Icon,
 } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
@@ -20,18 +19,17 @@ import {
   FaHome,
   FaCalendarAlt,
   FaBars,
-  FaMoon,
-  FaSun,
   FaSignInAlt,
   FaSignOutAlt,
 } from "react-icons/fa";
 import { DrawerButton } from "./Drawer.jsx";
+import { useDecodedAuth } from "../../context/AuthContext.jsx"; 
 import { useAuth } from "../../hooks/useAuth";
 
 const navItems = [
   { label: "Inicio", icon: FaHome, path: "/" },
   { label: "Hoteles", icon: FaHotel, path: "/hotels" },
-  { label: "Usuarios", icon: FaUserFriends, path: "/users" },
+  { label: "Usuarios", icon: FaUserFriends, path: "/users", requiresAdmin: true },
   { label: "Eventos", icon: FaCalendarAlt, path: "/events" },
 ];
 
@@ -44,9 +42,9 @@ export const Navbar = () => {
 
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
+  const { auth } = useDecodedAuth();
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const isAuthenticated = isLoggedIn || !!user;
+  const isAuthenticated = isLoggedIn || !!auth?.token;
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
@@ -56,6 +54,13 @@ export const Navbar = () => {
       navigate("/login");
     }
   };
+
+  const filteredNavItems = navItems.filter((item) => {
+    if (item.requiresAdmin) {
+      return auth?.role === "ADMIN_ROLE";
+    }
+    return true;
+  });
 
   return (
     <Flex
@@ -89,7 +94,7 @@ export const Navbar = () => {
 
       {/* Navegación en escritorio */}
       <HStack spacing={6} display={{ base: "none", md: "flex" }}>
-        {navItems.map((item) => (
+        {filteredNavItems.map((item) => (
           <NavLink
             to={item.path}
             key={item.label}
@@ -122,7 +127,7 @@ export const Navbar = () => {
             aria-label="Open menu"
           />
           <MenuList bg={menuBg} color={menuColor}>
-            {navItems.map((item) => (
+            {filteredNavItems.map((item) => (
               <MenuItem
                 key={item.label}
                 icon={<Icon as={item.icon} />}
@@ -149,7 +154,6 @@ export const Navbar = () => {
 
       <Spacer />
 
-      {/* Botón login/logout en escritorio */}
       <Button
         onClick={handleAuthClick}
         variant="outline"

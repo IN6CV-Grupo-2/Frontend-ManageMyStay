@@ -27,7 +27,7 @@ export const UserDetails = () => {
         const response = await fetch(
           `http://localhost:3000/manageMyStay/v1/user/${id}`,
           {
-            headers: { 'x-token': localStorage.getItem("token") },
+            headers: { 'x-token': localStorage.getItem("x-token") },
           }
         );
         if (!response.ok) throw new Error('Error al cargar los detalles del usuario.');

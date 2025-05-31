@@ -35,7 +35,7 @@ export const UserForm = () => {
         const response = await fetch(
           `http://localhost:3000/manageMyStay/v1/user/${id}`,
           {
-            headers: { 'x-token': localStorage.getItem("token") },
+            headers: { 'x-token': localStorage.getItem("x-token") },
           }
         );
         if (!response.ok) throw new Error("Error al cargar los datos del usuario.");
@@ -158,9 +158,8 @@ export const UserForm = () => {
               }
               placeholder="Selecciona un rol"
             >
-              <option value="user">Usuario</option>
-              <option value="admin">Administrador</option>
-              <option value="manager">Manager</option>
+              <option value="CLIENT_ROLE">CLIENT_ROLE</option>
+              <option value="ADMIN_HOTEL_ROLE">ADMIN_HOTEL_ROLE</option>
             </Select>
           </FormControl>
           <Flex gap={3} justify="center">
