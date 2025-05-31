@@ -21,6 +21,8 @@ import {
   FaBars,
   FaSignInAlt,
   FaSignOutAlt,
+  FaConciergeBell,
+  FaFileInvoiceDollar
 } from "react-icons/fa";
 import { DrawerButton } from "./Drawer.jsx";
 import { useDecodedAuth } from "../../context/AuthContext.jsx"; 
@@ -31,6 +33,8 @@ const navItems = [
   { label: "Hoteles", icon: FaHotel, path: "/hotels" },
   { label: "Usuarios", icon: FaUserFriends, path: "/users", requiresAdmin: true },
   { label: "Eventos", icon: FaCalendarAlt, path: "/events" },
+  { label: "Servicios", icon: FaConciergeBell, path: "/services" },
+  { label: "Facturas", icon: FaFileInvoiceDollar, path: "/bills" },
 ];
 
 export const Navbar = () => {

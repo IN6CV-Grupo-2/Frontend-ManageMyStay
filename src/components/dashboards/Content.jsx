@@ -7,6 +7,9 @@ import HotelsPage from "../../pages/hotel/HotelsPage.jsx";
 import RoomsPage from "../../pages/rooms/RoomsPage.jsx";
 import { ReservationsPage } from "../../pages/reservations/ReservationsPage.jsx";
 import {ReservationForm} from '../../components/reservations/FormReservation.jsx';
+import ServicesPage from "../../pages/ServicesPage.jsx";
+import BillPage from "../../pages/BillPage.jsx"
+
 export const Content = () => {
     return(
 
@@ -25,6 +28,8 @@ export const Content = () => {
                 <Route path="/reservations/create/:id" element={<ReservationForm mode={'create'}/>}/>
                 <Route path="/reservations/*" element={<ReservationsPage/>}/>
                 <Route path="/reservations/edit/:id" element={<ReservationForm mode={'edit'} />} />
+                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/bills" element={<BillPage />} />
             </Routes>
         </Box>
     )

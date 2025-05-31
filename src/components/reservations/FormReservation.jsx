@@ -14,9 +14,7 @@ export const ReservationForm = ({ mode = 'create' }) => {
     const { register, handleSubmit, setValue, control, formState: { errors } } = useForm();
     const toast = useToast();
     const [reservationData, setReservationData] = useState(null);
-    const services = ['Agua Caliente', 'Snacks', 'Toallas', 'Cobijas'];
     const cardBg = useColorModeValue("#F9F7F2", "#2E2A29");
-    const options = services.map(service => ({ value: service, label: service }));
     const meddleBg = "linear-gradient(135deg, #2E576A 0%, #B8807C 60%, #7BC2C4 100%)";
 
     useEffect(() => {

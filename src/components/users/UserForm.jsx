@@ -61,7 +61,7 @@ export const UserForm = () => {
     try {
       await updateUser(id, formData);
       navigate("/users");
-    } catch (err) {
+    } catch (error) {
       setError("Error al actualizar el usuario.");
     }
   };
